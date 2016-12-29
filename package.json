@@ -5,17 +5,24 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava"
   },
   "keywords": [],
   "author": "Rafael Espinoza <rafael@rafaelespinoza.com> (www.rafaelespinoza.com)",
   "license": "MIT",
   "devDependencies": {
+    "ava": "^0.17.0",
     "cz-conventional-changelog": "^1.2.0"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "ava": {
+    "verbose": true,
+    "files": [
+      "test/**/*.test.js"
+    ]
   }
 }

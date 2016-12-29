@@ -1,0 +1,50 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+node_modules
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Packages
+*.tgz
+*.zip
+
+# OS files
+.DS_Store*
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.fuse_hidden*
+Desktop.ini
+*.lnk
+
+# Editor
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+Session.vim
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
+
+# Application files
+.env*
+
+# source files
+data/*
+!data/.gitkeep

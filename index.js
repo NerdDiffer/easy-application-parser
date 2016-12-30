@@ -12,7 +12,19 @@ const getSaveReadThen = cb => {
     .catch(err => console.log(err));
 };
 
-getSaveReadThen(showRandomLine);
+const readThen = cb => {
+  const { PATHS, readFileAsync } = utility;
+
+  return readFileAsync(PATHS.DATA_DEFAULT)
+    .then(data => cb(data))
+    .catch(err => {
+      if (err.code === 'ENOENT') {
+        const msg = 'Try "getSaveReadThen" to get, save & read the file';
+        console.log(msg);
+        console.log(err);
+      }
+    });
+};
 
 function showRandomLine(data) {
   const arr = data.split("\n");

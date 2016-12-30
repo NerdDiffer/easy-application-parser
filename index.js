@@ -2,17 +2,26 @@ const utility = require('./src/utility');
 const query = require('./src/query');
 const parse = require('./src/parse');
 
-const readLocalList = handleSuccess => {
-  const { PATHS, readFile } = utility;
-  readFile(PATHS.DATA_DEFAULT, handleSuccess);
+const fetchSaveReadAnd = cb => {
+  const { PATHS, getFile, writeFile, readFile } = utility;
+
+  const getRemoteList = handleSuccess => {
+    getFile(handleSuccess);
+  };
+
+  const saveFileLocally = (data, handleSuccess) => {
+    writeFile(PATHS.DATA_DEFAULT, data, handleSuccess);
+  };
+
+  const readLocalList = handleSuccess => {
+    readFile(PATHS.DATA_DEFAULT, handleSuccess);
+  };
+
+  // TODO: promisify
+  getRemoteList(str => saveFileLocally(str, () => readLocalList(data => cb(data))));
 };
 
-const getRemoteList = handleSuccess => {
-  const { getFile } = utility;
-  getFile(handleSuccess);
-}
-
-getRemoteList(parseCompanies);
+fetchSaveReadAnd(showRandomLine);
 
 function showRandomLine(data) {
   const arr = data.split("\n");

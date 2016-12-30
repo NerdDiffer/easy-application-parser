@@ -17,6 +17,14 @@ module.exports.readFile = (pathToFile, handleSuccess) => {
   });
 };
 
+module.exports.writeFile = (pathToFile, input, handleSuccess) => {
+  fs.writeFile(pathToFile, input, (err, data) => {
+    if (err) { throw err; }
+
+    handleSuccess(data);
+  });
+};
+
 module.exports.getFile = handleSuccess => {
   const options = {
     'hostname': 'raw.githubusercontent.com',

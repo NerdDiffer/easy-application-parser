@@ -2,6 +2,8 @@ const utility = require('./src/utility');
 const query = require('./src/query');
 const parse = require('./src/parse');
 
+/* getting, reading list */
+
 const getSaveReadThen = cb => {
   const { PATHS, getFileAsync, writeFileAsync, readFileAsync } = utility;
 
@@ -25,6 +27,13 @@ const readThen = cb => {
       }
     });
 };
+
+module.exports = {
+  getSaveReadThen, readThen,
+  showRandomLine, parseCompanies
+};
+
+/* callbacks, pass to methods above */
 
 function showRandomLine(data) {
   const arr = data.split("\n");

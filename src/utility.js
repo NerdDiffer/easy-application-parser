@@ -1,6 +1,19 @@
 const path = require('path');
 const fs = require('fs');
 const http = require('https');
+const promisify = require('yaku/lib/promisify');
+
+const promisifyAll = obj => {
+  const keys = Object.keys(obj);
+
+  keys.forEach(key => {
+    if (typeof obj[key] == 'function') {
+      const mtd = promisify(obj[key]);
+      const mtdName = `${key}Async`;
+      obj[mtdName] = mtd;
+    }
+  });
+};
 
 const ROOT_PATH = path.join(__dirname, '..');
 
@@ -9,23 +22,23 @@ module.exports.PATHS = {
   DATA_DEFAULT: ROOT_PATH + '/data/list.md'
 };
 
-module.exports.readFile = (pathToFile, handleSuccess) => {
+module.exports.readFile = (pathToFile, cb) => {
   fs.readFile(pathToFile, 'utf8', (err, data) => {
-    if (err) { throw err; }
+    if (err) { cb(err); }
 
-    handleSuccess(data);
+    cb(null, data);
   });
 };
 
-module.exports.writeFile = (pathToFile, input, handleSuccess) => {
+module.exports.writeFile = (pathToFile, input, cb) => {
   fs.writeFile(pathToFile, input, (err, data) => {
-    if (err) { throw err; }
+    if (err) { cb(err); }
 
-    handleSuccess(data);
+    cb(null, data);
   });
 };
 
-module.exports.getFile = handleSuccess => {
+module.exports.getFile = cb => {
   const options = {
     'hostname': 'raw.githubusercontent.com',
     'path': '/j-delaney/easy-application/master/README.md',
@@ -41,10 +54,12 @@ module.exports.getFile = handleSuccess => {
     res.on('end', () => {
       const body = Buffer.concat(chunks);
       const str = body.toString();
-      handleSuccess(str);
+      cb(null, str);
     });
   });
 
-  req.on('error', e => console.log(e.message));
+  req.on('error', err => cb(err));
   req.end();
 };
+
+promisifyAll(module.exports);

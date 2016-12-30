@@ -24,5 +24,8 @@
     "files": [
       "test/**/*.test.js"
     ]
+  },
+  "dependencies": {
+    "yaku": "^0.17.4"
   }
 }

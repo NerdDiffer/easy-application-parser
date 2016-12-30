@@ -18,28 +18,20 @@ module.exports.parseCompany = (str = '') => {
 
   if (len === 0) { return; }
 
-  const output = { name: null, link: null };
-
   let i = 1;
-  let name = '';
 
   // capture company name
   while (i < len) {
-    name += str[i];
-
-    if (/\]/.test(str[i + 1])) {
-      output.name = name;
-      break;
-    }
-
+    if (/\]/.test(str[i])) { break; }
     i += 1;
   }
 
   // number of spaces between last char in name & first char in link
-  const DIST = 3;
-  output.link = str.slice(i + DIST, len - 1);
+  const DIST = 2;
+  const name = str.slice(1, i);
+  const link = str.slice(i + DIST, len - 1);
 
-  return output;
+  return createCompanyObj({ name, link });
 };
 
 const isUK = str => str === 'UK';
@@ -83,6 +75,31 @@ module.exports.parseLocation = (str = '') => {
       };
     }
 
-    return output.concat(obj);
+    return output.concat(createLocationObj(obj));
   }, []);
 };
+
+function createLocationObj(obj) {
+  if (obj.hasOwnProperty('remote')) {
+    return {
+      remote:  true,
+      city:    null,
+      state:   null,
+      country: null
+    };
+  } else {
+    return {
+      city:    obj.city    || null,
+      state:   obj.state   || null,
+      country: obj.country || null,
+      remote:  false
+    };
+  }
+}
+
+function createCompanyObj(obj) {
+  return {
+    name: obj.name || null,
+    link: obj.link || null
+  };
+}

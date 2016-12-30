@@ -25,7 +25,7 @@ test('#parseLocation: handles one city in USA', t => {
   const input = 'San Francisco, CA';
   const actual = parseLocation(input);
   const expected = [
-    { city: 'San Francisco', state: 'CA', country: 'USA' }
+    { city: 'San Francisco', state: 'CA', country: 'USA', remote: false }
   ];
   t.deepEqual(actual, expected);
 });
@@ -34,8 +34,8 @@ test('#parseLocation: handles multiple cities in USA', t => {
   const input = 'Lehi, UT; San Francisco, CA';
   const actual = parseLocation(input);
   const expected = [
-    { city: 'Lehi', state: 'UT', country: 'USA' },
-    { city: 'San Francisco', state: 'CA', country: 'USA' }
+    { city: 'Lehi', state: 'UT', country: 'USA', remote: false },
+    { city: 'San Francisco', state: 'CA', country: 'USA', remote: false }
   ];
   t.deepEqual(actual, expected);
 });
@@ -44,8 +44,8 @@ test('#parseLocation: handles remote', t => {
   const input = 'Boston, MA; Remote';
   const actual = parseLocation(input);
   const expected = [
-    { city: 'Boston', state: 'MA', country: 'USA' },
-    { remote: true }
+    { city: 'Boston', state: 'MA', country: 'USA', remote: false },
+    { remote: true, city: null, state: null, country: null }
   ];
   t.deepEqual(actual, expected);
 });
@@ -54,11 +54,11 @@ test('#parseLocation: handles cities outside of USA', t => {
   const input = 'Belo Horizonte, MG, Brazil; Brasília, DF, Brazil; Florianópolis, SC, Brazil; Rio de Janeiro, RJ, Brazil; São Paulo, SP, Brazil';
   const actual = parseLocation(input);
   const expected = [
-    { city: 'Belo Horizonte', state: 'MG', country: 'Brazil' },
-    { city: 'Brasília', state: 'DF', country: 'Brazil' },
-    { city: 'Florianópolis', state: 'SC', country: 'Brazil' },
-    { city: 'Rio de Janeiro', state: 'RJ', country: 'Brazil' },
-    { city: 'São Paulo', state: 'SP', country: 'Brazil' }
+    { city: 'Belo Horizonte', state: 'MG', country: 'Brazil', remote: false },
+    { city: 'Brasília', state: 'DF', country: 'Brazil', remote: false },
+    { city: 'Florianópolis', state: 'SC', country: 'Brazil', remote: false },
+    { city: 'Rio de Janeiro', state: 'RJ', country: 'Brazil', remote: false },
+    { city: 'São Paulo', state: 'SP', country: 'Brazil', remote: false }
   ];
 
   t.deepEqual(actual, expected);
@@ -68,8 +68,8 @@ test('#parseLocation: handles cities inside & outside of USA', t => {
   const input = 'Buenos Aires, Argentina; Palo Alto, CA';
   const actual = parseLocation(input);
   const expected = [
-    { city: 'Buenos Aires', country: 'Argentina' },
-    { city: 'Palo Alto', state: 'CA', country: 'USA' }
+    { city: 'Buenos Aires', state: null, country: 'Argentina', remote: false },
+    { city: 'Palo Alto', state: 'CA', country: 'USA', remote: false }
   ];
   t.deepEqual(actual, expected);
 });
@@ -78,7 +78,7 @@ test('#parseLocation: handles Washington, D.C.', t => {
   const input = 'Washington, D.C.';
   const actual = parseLocation(input);
   const expected = [
-    { city: 'Washington, D.C.', country: 'USA' }
+    { city: 'Washington, D.C.', state: null, country: 'USA', remote: false }
   ];
   t.deepEqual(actual, expected);
 });
@@ -87,9 +87,9 @@ test('#parseLocation: interprets single word as country', t => {
   const input = 'Australia; New Zealand; Singapore';
   const actual = parseLocation(input);
   const expected = [
-    { country: 'Australia' },
-    { country: 'New Zealand' },
-    { country: 'Singapore' }
+    { city: null, state: null, country: 'Australia', remote: false },
+    { city: null, state: null, country: 'New Zealand', remote: false },
+    { city: null, state: null, country: 'Singapore', remote: false }
   ];
   t.deepEqual(actual, expected);
 });
@@ -98,8 +98,8 @@ test('#parseLocation: handles UK', t => {
   const input = 'London, UK; Milton Keynes, UK';
   const actual = parseLocation(input);
   const expected = [
-    { city: 'London', country: 'UK' },
-    { city: 'Milton Keynes', country: 'UK' }
+    { city: 'London', state: null, country: 'UK', remote: false },
+    { city: 'Milton Keynes', state: null, country: 'UK', remote: false }
   ];
   t.deepEqual(actual, expected);
 });

@@ -36,7 +36,7 @@ module.exports.findTableStart = (arr, ind) => {
 };
 
 // visit each array member, starting from an index. assumes they're all table rows.
-module.exports.eachFrom = (arr, startingInd) => {
+module.exports.eachFrom = (arr, startingInd, handleParsedLine) => {
   const len = arr.length;
   const { parseLine, parseCompany, parseLocation } = parse;
 
@@ -52,7 +52,7 @@ module.exports.eachFrom = (arr, startingInd) => {
       locations: parseLocation(locations)
     };
 
-    console.log(parsedLine);
+    handleParsedLine(parsedLine);
 
     line = arr[i += 1];
   }

@@ -42,12 +42,16 @@ module.exports.showRandomLine = data => {
   console.log(parse.parseLocation(locations));
 };
 
-module.exports.parseCompanies = data => {
+// bind to a callback `cb`
+const parseCompanies = (cb, data) => {
   const arr = data.split("\n");
   const { findTableStart, eachFrom } = tableHelpers;
 
   let i = findTableStart(arr, 0);
   i += 2; // jump to first table row
 
-  eachFrom(arr, i);
+  eachFrom(arr, i, cb);
 };
+
+module.exports.parseCompanies = parseCompanies;
+module.exports.parseAndPrintCompanies = parseCompanies.bind(null, console.log);

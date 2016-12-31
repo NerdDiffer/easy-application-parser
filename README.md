@@ -51,3 +51,42 @@ const showCompaniesInWA = parseCompanies.bind(null, row => {
 
 readThen(showCompaniesInWA);
 ```
+
+#### Table row data as an object
+
+Each `row` object has two properties:
+
+1. `company`: an object
+1. `locations`: an array of objects
+
+##### company
+
+```js
+{
+  name: 'name of the company',
+  link: 'link to their careers & info page'
+}
+```
+
+##### locations
+
+The `locations` property is an array of objects. The make-up of the array will
+vary from company to company. But each object in the array looks like:
+
+```js
+// If marked as "Remote":
+{
+  remote:  true,
+  city:    null,
+  state:   null,
+  country: null
+}
+
+// Otherwise:
+{
+  remote:   false,
+  city:    'city name if available' || null,
+  state:   'state if available'     || null,
+  country: 'country if available'   || null
+}
+```

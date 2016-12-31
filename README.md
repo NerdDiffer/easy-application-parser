@@ -17,14 +17,14 @@ Get the list, save to disk, read:
 
 ```js
 getSaveReadThen(showRandomLine);
-getSaveReadThen(parseCompanies);
+getSaveReadThen(parseAndPrintCompanies);
 ```
 
 If you've already gotten & saved the file locally, just read it:
 
 ```js
 readThen(showRandomLine);
-readThen(parseCompanies);
+readThen(parseAndPrintCompanies);
 ```
 
 #### Custom callbacks
@@ -38,4 +38,16 @@ function cb(foo) {
   const bar = foo.split("\n");
   console.log(Array.isArray(bar)); // true
 }
+```
+
+You could also use `parseCompanies` as a template to straight to the companies:
+
+```js
+const showCompaniesInWA = parseCompanies.bind(null, row => {
+  const { locations } = row;
+  const isLocationMatch = locations.some(loc => loc.state === 'WA');
+  if (isLocationMatch) { console.log(row.company); }
+});
+
+readThen(showCompaniesInWA);
 ```

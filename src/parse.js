@@ -1,3 +1,5 @@
+const us_states = require('./locations/us-states');
+
 const preProcessLine = str => (
   str.split('|')
     .map(s => s.trim())
@@ -34,10 +36,9 @@ module.exports.parseCompany = (str = '') => {
   return createCompanyObj({ name, link });
 };
 
-const isUK = str => str === 'UK';
 const isDC = (str1, str2) => str1 === 'Washington' && str2 === 'D.C.';
 // does the string "look like" an abbreviation for a state?
-const isStatey = str => str.length === 2 && !isUK(str) && /[A-Z]/.test(str);
+const isStatey = str => str.length === 2 && us_states.hasOwnProperty(str);
 const isRemote = str => str && /^remote$/i.test(str);
 
 module.exports.parseLocation = (str = '') => {
@@ -50,6 +51,8 @@ module.exports.parseLocation = (str = '') => {
     const len = parts.length;
 
     if (len === 1) {
+      if (parts[0] === '') { return output; } // handle lingering semi-colons
+
       if (isRemote(parts[0])) {
         obj = { remote: true };
       } else {

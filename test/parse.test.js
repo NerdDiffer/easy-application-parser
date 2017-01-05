@@ -94,12 +94,39 @@ test('#parseLocation: interprets single word as country', t => {
   t.deepEqual(actual, expected);
 });
 
-test('#parseLocation: handles UK', t => {
+test('#parseLocation: interprets 2-letter abbr. as country', t => {
   const input = 'London, UK; Milton Keynes, UK';
   const actual = parseLocation(input);
   const expected = [
     { city: 'London', state: null, country: 'UK', remote: false },
     { city: 'Milton Keynes', state: null, country: 'UK', remote: false }
   ];
+
+  t.deepEqual(actual, expected);
+});
+
+test('#parseLocation: interprets 2-letter abbr. states & countries', t => {
+  const input = 'Amsterdam, NL; Hong Kong Island, HK; New York, NY; San Francisco, CA; Shenzen, CN;';
+
+  const actual = parseLocation(input);
+  const expected = [
+    { city: 'Amsterdam', state: null, country: 'NL', remote: false },
+    { city: 'Hong Kong Island', state: null, country: 'HK', remote: false },
+    { city: 'New York', state: 'NY', country: 'USA', remote: false },
+    { city: 'San Francisco', state: 'CA', country: 'USA', remote: false },
+    { city: 'Shenzen', state: null, country: 'CN', remote: false }
+  ];
+
+  t.deepEqual(actual, expected);
+});
+
+test('#parseLocation: ignores lingering semicolons', t => {
+  const input = 'New York, NY; ; San Francisco, CA;';
+  const actual = parseLocation(input);
+  const expected = [
+    { city: 'New York', state: 'NY', country: 'USA', remote: false },
+    { city: 'San Francisco', state: 'CA', country: 'USA', remote: false }
+  ];
+
   t.deepEqual(actual, expected);
 });
